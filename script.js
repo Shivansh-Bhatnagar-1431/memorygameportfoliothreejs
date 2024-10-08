@@ -1,7 +1,12 @@
 //import * as THREE from 'https://cdn.skypack.dev/three';
 //import * as THREE from 'https://cdn.skypack.dev/three';
+showAlert();
+function showAlert() {
+  alert("Hello, Welcome to my gamified portfolio website. This is a memory based card game in which you have to flip two similar kind of cards to get to that section shown by the card. Press Enter to reach back to the card pallet for further flipping. Happy Gaming!!!");
+}
 
 const scene = new THREE.Scene();
+
 
 const camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
@@ -10,6 +15,99 @@ const renderer = new THREE.WebGL1Renderer({
   antialias: true,
   // alpha: true,
 });
+
+document.addEventListener('keydown', (event) => {
+  const gameSection = document.querySelector('.memory-game');
+  if (gameSection && event.key === 'Enter') { // Replace 'Enter' with your preferred key
+    gameSection.scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+const cards = document.querySelectorAll('.memory-card');
+
+let hasFlippedCard = false;
+let lockBoard = false;
+let firstCard, secondCard;
+
+function flipCard() {
+  if (lockBoard) return;
+  if (this === firstCard) return;
+
+  this.classList.add('flip');
+
+  if (!hasFlippedCard) {
+    // first click
+    hasFlippedCard = true;
+    firstCard = this;
+    return;
+  }
+
+  // second click
+  secondCard = this;
+  checkForMatch();
+}
+
+// function checkForMatch() {
+//   let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
+//   isMatch ? disableCards() : unflipCards();
+  
+// }
+function checkForMatch() {
+
+  let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
+  if (isMatch) {
+    console.log(firstCard.dataset.framework);
+    scrollToSection(firstCard.dataset.framework); // Scroll to the target section when cards match
+    disableCards();
+   
+  } else {
+    unflipCards();
+  }
+}
+
+function scrollToSection(sectionId) {
+  const section = document.getElementById(sectionId);
+  enableScroll(); // Enable scrolling when matching cards are found
+  section.scrollIntoView({ behavior: "smooth" });
+}
+// Disable scrolling function
+function disableScroll() {
+  document.body.style.overflow = 'hidden'; // Prevent scrolling
+}
+
+// Enable scrolling function
+function enableScroll() {
+  document.body.style.overflow = 'auto'; // Allow scrolling
+}
+function disableCards() {
+  firstCard.removeEventListener('click', flipCard);
+  secondCard.removeEventListener('click', flipCard);
+  resetBoard();
+}
+
+function unflipCards() {
+  lockBoard = true;
+
+  setTimeout(() => {
+    firstCard.classList.remove('flip');
+    secondCard.classList.remove('flip');
+    resetBoard();
+  }, 1500);
+}
+
+function resetBoard() {
+  [hasFlippedCard, lockBoard] = [false, false];
+  [firstCard, secondCard] = [null, null];
+}
+
+(function shuffle() {
+  cards.forEach(card => {
+    let randomPos = Math.floor(Math.random() * 12);
+    card.style.order = randomPos;
+  });
+})();
+
+cards.forEach(card => card.addEventListener('click', flipCard));
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -102,14 +200,14 @@ box.position.z = 20;
 box.position.x = 1;
 box.position.y = -2;
 
-const roopTexture = loader.load('roop.jpg');
-const roop = new THREE.Mesh(
-  new THREE.BoxGeometry(3, 3, 3),
-  new THREE.MeshBasicMaterial({map:roopTexture})
-);
-roop.position.set(2, -1, -5); // Set fixed position
+// const roopTexture = loader.load('roop.jpg');
+// const roop = new THREE.Mesh(
+//   new THREE.BoxGeometry(3, 3, 3),
+//   new THREE.MeshBasicMaterial({map:roopTexture})
+// );
+// roop.position.set(2, -1, -5); // Set fixed position
 
-scene.add(roop);
+// scene.add(roop);
 
 
 const earthTexture= loader.load('cloud.jpg');
@@ -126,10 +224,10 @@ scene.add(earth);
 earth.position.z = 15;
 earth.position.setX(-10);
 
-roop.position.z = -5;
-roop.position.x = 2;
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+// roop.position.z = -5;
+// roop.position.x = 2;
+// const raycaster = new THREE.Raycaster();
+// const mouse = new THREE.Vector2();
 
 // let lastScrollY = window.scrollY; // Track the last scroll position
 // const roopVisibleDistance = 25; // Distance before roop disappears
@@ -142,9 +240,9 @@ function moveCamera() {
   earth.rotation.y += 0.0;
   earth.rotation.z -= 0.1;
 
-   //roop.position.z = t * -.0009;
-   roop.rotation.y += 0.01;
-   roop.rotation.z += 0.01;
+  //  //roop.position.z = t * -.0009;
+  //  roop.rotation.y += 0.01;
+  //  roop.rotation.z += 0.01;
 
   box.rotation.x -= 0.01;
   box.rotation.z += 0.01;
