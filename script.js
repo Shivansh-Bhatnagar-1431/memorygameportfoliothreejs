@@ -1,9 +1,11 @@
 //import * as THREE from 'https://cdn.skypack.dev/three';
 //import * as THREE from 'https://cdn.skypack.dev/three';
+
 showAlert();
 function showAlert() {
   alert("Hello, Welcome to my gamified portfolio website. This is a memory based card game in which you have to flip two similar kind of cards to get to that section shown by the card. Press Enter to reach back to the card pallet for further flipping. Happy Gaming!!!");
 }
+// document.body.style.overflow = 'hidden';
 
 const scene = new THREE.Scene();
 
@@ -65,11 +67,40 @@ function checkForMatch() {
   }
 }
 
+// function scrollToSection(sectionId) {
+//   const section = document.getElementById(sectionId);
+//   enableScroll(); // Enable scrolling when matching cards are found
+//   section.scrollIntoView({ behavior: "smooth" });
+// }
+// // Disable scrolling function
+// function disableScroll() {
+//   document.body.style.overflow = 'hidden'; // Prevent scrolling
+// }
+
+// // Enable scrolling function
+// function enableScroll() {
+//   document.body.style.overflow = 'auto'; // Allow scrolling
+// }
+function disableCards() {
+  firstCard.removeEventListener('click', flipCard);
+  secondCard.removeEventListener('click', flipCard);
+  resetBoard();
+}
+
+
+document.body.style.overflow = 'hidden'; // Initially disable scrolling
+
+// Modify your existing code to ensure smooth scrolling after matching cards
 function scrollToSection(sectionId) {
   const section = document.getElementById(sectionId);
   enableScroll(); // Enable scrolling when matching cards are found
   section.scrollIntoView({ behavior: "smooth" });
+
+  setTimeout(() => {
+    disableScroll(); // Disable scrolling again after reaching the section
+  }, 5000); // Add a delay to ensure scrolling completes before locking it again
 }
+
 // Disable scrolling function
 function disableScroll() {
   document.body.style.overflow = 'hidden'; // Prevent scrolling
@@ -78,11 +109,6 @@ function disableScroll() {
 // Enable scrolling function
 function enableScroll() {
   document.body.style.overflow = 'auto'; // Allow scrolling
-}
-function disableCards() {
-  firstCard.removeEventListener('click', flipCard);
-  secondCard.removeEventListener('click', flipCard);
-  resetBoard();
 }
 
 function unflipCards() {

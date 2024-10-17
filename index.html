@@ -27,6 +27,16 @@
   
 	<main>
     <h1>Memory Card Game Portfolio</h1>
+    <script>
+      window.onload = function() {
+        // Add a delay to ensure page is fully loaded
+        setTimeout(function() {
+          // Scroll to the memory-game section
+          const gameSection = document.querySelector('.memory-game');
+          gameSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 500); // 500ms delay for smooth scrolling
+      };
+    </script>
       
       <div class="scroll-container">
     <section class="memory-game">

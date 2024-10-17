@@ -16,6 +16,7 @@ h1 {
   background-color: #567bd7; 
   border-radius: 20px;
   font-size: 3em;
+ 
   left:220px;
   color: #d14b26;
   text-align: center;
@@ -28,19 +29,19 @@ h1:hover {
   color: #9baf4c; /* Change color on hover */
 }
 .memory-game {
-  width: 840px;
-  height: 840px;
+  width: 100vw;
+  height:100vh;
   margin: auto;
-  margin-left: 150px;
+  /* margin-left: 150px; */
   display: flex;
   flex-wrap: wrap;
   perspective: 1000px;
 }
 
 .memory-card {
-  width: calc(25% - 10px);
-  height: calc(33.333% - 10px);
-  margin: 5px;
+  width: calc(15% - 10px);
+  height: calc(40% - 10px);
+  margin: 10px;
   position: relative;
   transform: scale(1);
   transform-style: preserve-3d;
